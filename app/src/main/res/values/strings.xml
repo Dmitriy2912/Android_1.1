@@ -3,4 +3,8 @@
     <string name="Nmedia">Nmedia!</string>
     <string name="desription_post_author_avtor" translatable="false">Post author actor</string>
     <string name="desription_post_menu" translatable="false">Post menu</string>
+    <string name="desription_Laik" translatable="false">Laik menu</string>
+    <string name="desription_repost" translatable="false">repost menu</string>
+    <string name="desription_eye" translatable="false">eye menu</string>
+
 </resources>

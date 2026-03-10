@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+        tools:context=".MainActivity">
 
     <ImageView
         android:id="@+id/avatar"
@@ -16,16 +16,17 @@
         android:contentDescription="@string/desription_post_author_avtor"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@sample/post_avatars_drawable(1)" />
+        tools:srcCompat="@sample/post_avatars" />
 
     <TextView
         android:id="@+id/author"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/avatar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="16dp"
+        android:layout_marginStart="16dp"
+        android:maxLines="1"
+        app:layout_constraintEnd_toStartOf="@id/menu"
+        app:layout_constraintStart_toEndOf="@id/avatar"
+        app:layout_constraintTop_toTopOf="@id/avatar"
         app:layout_constraintVertical_chainStyle="packed"
         tools:text="@sample/posts.json/data/author" />
 
@@ -33,9 +34,11 @@
         android:id="@+id/published"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBaseline_toBottomOf="@id/avatar"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintBottom_toBottomOf="@id/avatar"
-        app:layout_constraintEnd_toEndOf="@id/avatar"
+        app:layout_constraintStart_toEndOf="@id/avatar"
+        app:layout_constraintTop_toTopOf="@id/author"
         tools:text="@sample/posts.json/data/published" />
 
     <ImageButton
@@ -54,17 +57,86 @@
         android:id="@+id/barrier"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="avatar,published,menu"
-        app:barrierDirection="bottom"/>
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="avatar,published,menu" />
 
     <TextView
         android:id="@+id/content"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        app:layout_constraintBaseline_toBottomOf="@id/barrier"
+        app:layout_constraintTop_toBottomOf="@id/barrier"
         tools:text="@sample/posts.json/data/content" />
+
+    <ImageView
+        android:id="@+id/laik"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="200dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/desription_Laik"
+        tools:srcCompat="@drawable/outline_heart_check_24" />
+
+    <TextView
+        android:id="@+id/numberOfLikes"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toEndOf="@id/laik"
+        app:layout_constraintTop_toTopOf="@id/laik"
+        tools:text="@sample/posts.json/data/numberOfLikes" />
+
+    <ImageView
+        android:id="@+id/repost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="200dp"
+        app:layout_constraintStart_toEndOf="@id/numberOfLikes"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:contentDescription="@string/desription_repost"
+        tools:srcCompat="@drawable/outline_share_reviews_24" />
+
+    <TextView
+        android:id="@+id/numberOfReposts"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toEndOf="@id/repost"
+        app:layout_constraintTop_toTopOf="@id/repost"
+        tools:text="@sample/posts.json/data/numberOfReposts" />
+
+    <ImageView
+    android:id="@+id/eye"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="608dp"
+    android:layout_marginTop="200dp"
+    app:layout_constraintStart_toEndOf="@id/numberOfLikes"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    android:contentDescription="@string/desription_eye"
+    tools:srcCompat="@drawable/baseline_remove_red_eye_24" />
+
+    <TextView
+        android:id="@+id/numberOfViews"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toEndOf="@id/eye"
+        app:layout_constraintTop_toTopOf="@id/eye"
+        tools:text="@sample/posts.json/data/numberOfViews" />
+
+
+
+
+
+
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
