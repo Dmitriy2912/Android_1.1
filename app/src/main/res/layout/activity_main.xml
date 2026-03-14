@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-        tools:context=".MainActivity">
+    tools:context=".MainActivity">
 
     <ImageView
         android:id="@+id/avatar"
@@ -16,7 +16,8 @@
         android:contentDescription="@string/desription_post_author_avtor"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@sample/post_avatars" />
+        tools:srcCompat="@sample/post_avatars"/>
+
 
     <TextView
         android:id="@+id/author"
@@ -49,7 +50,7 @@
         android:layout_marginEnd="16dp"
         android:background="@android:color/transparent"
         android:contentDescription="@string/desription_post_menu"
-        android:src="@drawable/outline_more_vert_24"
+        app:srcCompat="@drawable/outline_more_vert_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
@@ -69,14 +70,14 @@
         tools:text="@sample/posts.json/data/content" />
 
     <ImageView
-        android:id="@+id/laik"
+        android:id="@+id/like"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/content"
         android:contentDescription="@string/desription_Laik"
-        tools:srcCompat="@drawable/outline_heart_check_24" />
+        app:srcCompat="@drawable/outline_heart_check_24" />
 
 
     <TextView
@@ -84,8 +85,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        app:layout_constraintStart_toEndOf="@id/laik"
-        app:layout_constraintTop_toTopOf="@id/laik"
+        app:layout_constraintStart_toEndOf="@id/like"
+        app:layout_constraintTop_toTopOf="@id/like"
         app:layout_constraintVertical_chainStyle="packed"
         tools:text="@sample/posts.json/data/numberOfLikes" />
 
@@ -96,8 +97,8 @@
         android:layout_marginStart="16dp"
         android:contentDescription="@string/desription_repost"
         app:layout_constraintStart_toEndOf="@id/numberOfLikes"
-        app:layout_constraintTop_toTopOf="@id/laik"
-        tools:srcCompat="@drawable/outline_share_reviews_24" />
+        app:layout_constraintTop_toTopOf="@id/like"
+        app:srcCompat="@drawable/outline_share_reviews_24" />
 
     <TextView
         android:id="@+id/numberOfReposts"
@@ -118,7 +119,7 @@
         android:contentDescription="@string/desription_eye"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/numberOfReposts"
-        tools:srcCompat="@drawable/baseline_remove_red_eye_24" />
+        app:srcCompat="@drawable/baseline_remove_red_eye_24" />
 
     <TextView
         android:id="@+id/numberOfViews"
@@ -129,14 +130,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/eye"
         tools:text="@sample/posts.json/data/numberOfViews" />
-
-
-
-
-
-
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
