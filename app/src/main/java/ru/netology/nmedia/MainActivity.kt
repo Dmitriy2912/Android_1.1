@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
             published = "21 мая в 18:36",
             likes = 10,
             likedByMe = false,
-            shares = 0  // добавляем поле shares
+            shares = 10  // добавляем поле shares
         )
         fun formatNumber(number: Int): String {
             return when {
@@ -45,16 +45,17 @@ class MainActivity : AppCompatActivity() {
             binding.like?.setImageResource(
                 if (post.likedByMe) R.drawable.ic_liked_24 else R.drawable.ic_like_24
             )
-            binding.likeCount?.text = formatNumber(post.likes)
+            binding.numberOfLikes?.text = formatNumber(post.likes)
         }
         with(binding) {
             author.text = post.author
             published.text = post.published
-            content?.text = post.content
+            content.text = post.content
+
 
             // Инициализация отображения лайков
             updateLikesDisplay()
-            shareCount?.text = formatNumber(post.shares)
+            updateLikesDisplay()
 
             root.setOnClickListener {
                 Log.d("stuff", "stuff")
@@ -71,10 +72,10 @@ class MainActivity : AppCompatActivity() {
                 updateLikesDisplay()
             }
 
-            share?.setOnClickListener {
+            repost.setOnClickListener {
                 Log.d("stuff", "share")
                 post.shares++
-                shareCount?.text = formatNumber(post.shares)
+                updateLikesDisplay()
             }
 
         }
