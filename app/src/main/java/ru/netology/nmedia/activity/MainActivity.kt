@@ -1,14 +1,16 @@
-package ru.netology.nmedia
+package ru.netology.nmedia.activity
 
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.ActivityMainBinding
 import ru.netology.nmedia.dto.Post
-import kotlin.math.roundToInt
+import ru.netology.nmedia.viewmobel.PostViewModel
 
 
 class MainActivity : AppCompatActivity() {
@@ -22,7 +24,10 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        var post = Post(
+        val viewModel by viewModels <PostViewModel>()
+
+
+        val post = Post(
             id = 1,
             author = "Нетология. Университет интернет-профессий будущего",
             content = "Привет, это новая Нетология! Когда-то Нетология начиналась с интенсивов по онлайн-маркетингу. Затем появились курсы по дизайну, разработке, аналитике и управлению. Мы растём сами и помогаем расти студентам: от новичков до уверенных профессионалов. Но самое важное остаётся с нами: мы верим, что в каждом уже есть сила, которая заставляет хотеть больше, целиться выше, бежать быстрее. Наша миссия — помочь встать на путь роста и начать цепочку перемен → http://netolo.gy/fyb",
@@ -42,11 +47,14 @@ class MainActivity : AppCompatActivity() {
 
 
         fun updateLikesDisplay() {
-            binding.like?.setImageResource(
+            binding.like.setImageResource(
                 if (post.likedByMe) R.drawable.ic_liked_24 else R.drawable.ic_like_24
             )
-            binding.numberOfLikes?.text = formatNumber(post.likes)
+            binding.numberOfLikes.text = formatNumber(post.likes)
         }
+
+
+
         with(binding) {
             author.text = post.author
             published.text = post.published
@@ -65,7 +73,7 @@ class MainActivity : AppCompatActivity() {
                 Log.d("stuff", "avatar")
             }
 
-            like?.setOnClickListener {
+            like.setOnClickListener {
                 Log.d("stuff", "like")
                 post.likedByMe = !post.likedByMe
                 if (post.likedByMe) post.likes++ else post.likes--
@@ -80,6 +88,8 @@ class MainActivity : AppCompatActivity() {
 
         }
     }
+
+
+
+
 }
-
-
