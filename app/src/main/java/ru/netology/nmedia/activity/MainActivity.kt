@@ -13,6 +13,7 @@ import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.viewmobel.PostViewModel
 
 
+
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,46 +25,52 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        val viewModel by viewModels <PostViewModel>()
 
-
-        val post = Post(
+        var post = Post(
             id = 1,
             author = "Нетология. Университет интернет-профессий будущего",
             content = "Привет, это новая Нетология! Когда-то Нетология начиналась с интенсивов по онлайн-маркетингу. Затем появились курсы по дизайну, разработке, аналитике и управлению. Мы растём сами и помогаем расти студентам: от новичков до уверенных профессионалов. Но самое важное остаётся с нами: мы верим, что в каждом уже есть сила, которая заставляет хотеть больше, целиться выше, бежать быстрее. Наша миссия — помочь встать на путь роста и начать цепочку перемен → http://netolo.gy/fyb",
             published = "21 мая в 18:36",
             likes = 10,
             likedByMe = false,
-            shares = 10  // добавляем поле shares
+            shares = 0
         )
+
         fun formatNumber(number: Int): String {
             return when {
+                number < 0 -> "0"
                 number < 1_000 -> number.toString()
-                number < 10_000 -> String.format("%.1f", number / 100.0) + "K"
+                number < 10_000 -> {
+                    val hundreds = number / 100
+                    String.format("%.1f", hundreds / 10.0) + "K"
+                }
                 number < 1_000_000 -> "${number / 1_000}K"
-                else -> String.format("%.1f", number / 1_000_000.0) + "M"
+                else -> {
+                    val millionsHundreds = number / 100_000
+                    String.format("%.1f", millionsHundreds / 10.0) + "M"
+                }
             }
         }
 
-
         fun updateLikesDisplay() {
-            binding.like.setImageResource(
+            binding.like?.setImageResource(
                 if (post.likedByMe) R.drawable.ic_liked_24 else R.drawable.ic_like_24
             )
-            binding.numberOfLikes.text = formatNumber(post.likes)
+            binding.numberOfLikes?.text = formatNumber(post.likes)
         }
 
-
+        fun updateSharesDisplay() {
+            binding.numberOfReposts?.text = formatNumber(post.shares)
+        }
 
         with(binding) {
             author.text = post.author
             published.text = post.published
             content.text = post.content
 
-
-            // Инициализация отображения лайков
+            // Инициализация отображения
             updateLikesDisplay()
-            updateLikesDisplay()
+            updateSharesDisplay()
 
             root.setOnClickListener {
                 Log.d("stuff", "stuff")
@@ -73,7 +80,7 @@ class MainActivity : AppCompatActivity() {
                 Log.d("stuff", "avatar")
             }
 
-            like.setOnClickListener {
+            like?.setOnClickListener {
                 Log.d("stuff", "like")
                 post.likedByMe = !post.likedByMe
                 if (post.likedByMe) post.likes++ else post.likes--
@@ -83,13 +90,12 @@ class MainActivity : AppCompatActivity() {
             repost.setOnClickListener {
                 Log.d("stuff", "share")
                 post.shares++
-                updateLikesDisplay()
+                updateSharesDisplay()
             }
-
         }
     }
-
-
-
-
 }
+
+
+
+
