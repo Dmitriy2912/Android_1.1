@@ -1,6 +1,7 @@
 package ru.netology.nmedia.activity
 
 import android.os.Bundle
+import android.telephony.PhoneNumberUtils.formatNumber
 import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -26,75 +27,45 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        var post = Post(
-            id = 1,
-            author = "Нетология. Университет интернет-профессий будущего",
-            content = "Привет, это новая Нетология! Когда-то Нетология начиналась с интенсивов по онлайн-маркетингу. Затем появились курсы по дизайну, разработке, аналитике и управлению. Мы растём сами и помогаем расти студентам: от новичков до уверенных профессионалов. Но самое важное остаётся с нами: мы верим, что в каждом уже есть сила, которая заставляет хотеть больше, целиться выше, бежать быстрее. Наша миссия — помочь встать на путь роста и начать цепочку перемен → http://netolo.gy/fyb",
-            published = "21 мая в 18:36",
-            likes = 10,
-            likedByMe = false,
-            shares = 0
-        )
+        val viewModel: PostViewModel by viewModels()
+        viewModel.data.observe(this) { post ->
+            with(binding) {
+                author.text = post.author
+                published.text = post.published
+                content.text = post.content
+                like.setImageResource(
+                    if (post.likedByMe) R.drawable.ic_liked_24 else R.drawable.ic_like_24
+                )
+               
 
-        fun formatNumber(number: Int): String {
-            return when {
-                number < 0 -> "0"
-                number < 1_000 -> number.toString()
-                number < 10_000 -> {
-                    val hundreds = number / 100
-                    String.format("%.1f", hundreds / 10.0) + "K"
+            }
+        }
+        binding.like.setOnClickListener {
+            viewModel.like()
+
+            fun formatNumber(number: Int): String {
+                return when {
+                    number < 0 -> "0"
+                    number < 1_000 -> number.toString()
+                    number < 10_000 -> {
+                        val hundreds = number / 100
+                        String.format("%.1f", hundreds / 10.0) + "K"
+                    }
+
+                    number < 1_000_000 -> "${number / 1_000}K"
+                    else -> {
+                        val millionsHundreds = number / 100_000
+                        String.format("%.1f", millionsHundreds / 10.0) + "M"
+                    }
                 }
-                number < 1_000_000 -> "${number / 1_000}K"
-                else -> {
-                    val millionsHundreds = number / 100_000
-                    String.format("%.1f", millionsHundreds / 10.0) + "M"
-                }
-            }
-        }
-
-        fun updateLikesDisplay() {
-            binding.like?.setImageResource(
-                if (post.likedByMe) R.drawable.ic_liked_24 else R.drawable.ic_like_24
-            )
-            binding.numberOfLikes?.text = formatNumber(post.likes)
-        }
-
-        fun updateSharesDisplay() {
-            binding.numberOfReposts?.text = formatNumber(post.shares)
-        }
-
-        with(binding) {
-            author.text = post.author
-            published.text = post.published
-            content.text = post.content
-
-            // Инициализация отображения
-            updateLikesDisplay()
-            updateSharesDisplay()
-
-            root.setOnClickListener {
-                Log.d("stuff", "stuff")
             }
 
-            avatar.setOnClickListener {
-                Log.d("stuff", "avatar")
-            }
 
-            like?.setOnClickListener {
-                Log.d("stuff", "like")
-                post.likedByMe = !post.likedByMe
-                if (post.likedByMe) post.likes++ else post.likes--
-                updateLikesDisplay()
-            }
-
-            repost.setOnClickListener {
-                Log.d("stuff", "share")
-                post.shares++
-                updateSharesDisplay()
-            }
         }
     }
 }
+
+
 
 
 
