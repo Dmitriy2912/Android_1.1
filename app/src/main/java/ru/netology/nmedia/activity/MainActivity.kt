@@ -1,7 +1,6 @@
 package ru.netology.nmedia.activity
 
 import android.os.Bundle
-import android.telephony.PhoneNumberUtils.formatNumber
 import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -11,6 +10,7 @@ import androidx.core.view.WindowInsetsCompat
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.ActivityMainBinding
 import ru.netology.nmedia.dto.Post
+import ru.netology.nmedia.repository.formatNumber
 import ru.netology.nmedia.viewmobel.PostViewModel
 
 
@@ -36,34 +36,27 @@ class MainActivity : AppCompatActivity() {
                 like.setImageResource(
                     if (post.likedByMe) R.drawable.ic_liked_24 else R.drawable.ic_like_24
                 )
-               
+
+                numberOfLikes.text = formatNumber(post.likes)
+                numberOfReposts.text = formatNumber(post.shares)
+
 
             }
         }
-        binding.like.setOnClickListener {
-            viewModel.like()
-
-            fun formatNumber(number: Int): String {
-                return when {
-                    number < 0 -> "0"
-                    number < 1_000 -> number.toString()
-                    number < 10_000 -> {
-                        val hundreds = number / 100
-                        String.format("%.1f", hundreds / 10.0) + "K"
-                    }
-
-                    number < 1_000_000 -> "${number / 1_000}K"
-                    else -> {
-                        val millionsHundreds = number / 100_000
-                        String.format("%.1f", millionsHundreds / 10.0) + "M"
-                    }
-                }
-            }
+        binding.like.setOnClickListener { viewModel.like() }
+        binding.repost.setOnClickListener { viewModel.share() }
 
 
-        }
+
+
+
     }
+
+
 }
+
+
+
 
 
 

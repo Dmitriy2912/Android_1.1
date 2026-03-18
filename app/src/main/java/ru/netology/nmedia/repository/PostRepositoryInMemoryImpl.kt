@@ -12,7 +12,8 @@ class PostRepositoryInMemoryImpl: PostRepository {
         published = "21 мая в 18:36",
         likes = 10,
         likedByMe = false,
-        shares = 10  // добавляем поле shares
+        shares = 10,
+        sharedByMe = false
     )
     private val data = MutableLiveData(post)
 
@@ -24,6 +25,10 @@ class PostRepositoryInMemoryImpl: PostRepository {
     }
 
     override fun share() {
-        post = post.copy(shares = post.shares + 1)
+        post = if (post.sharedByMe) {
+            post.copy(shares = post.shares - 1, sharedByMe = false)
+        } else {
+            post.copy(shares = post.shares + 1, sharedByMe = true)
+        }
     }
 }
