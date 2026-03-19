@@ -30,5 +30,6 @@ class PostRepositoryInMemoryImpl: PostRepository {
         } else {
             post.copy(shares = post.shares + 1, sharedByMe = true)
         }
+        data.value = post
     }
 }
