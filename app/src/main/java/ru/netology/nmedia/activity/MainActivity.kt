@@ -1,7 +1,7 @@
 package ru.netology.nmedia.activity
 
+
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -9,7 +9,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.ActivityMainBinding
-import ru.netology.nmedia.dto.Post
+import ru.netology.nmedia.databinding.CardPostBinding
 import ru.netology.nmedia.repository.formatNumber
 import ru.netology.nmedia.viewmobel.PostViewModel
 
@@ -29,30 +29,32 @@ class MainActivity : AppCompatActivity() {
 
         val viewModel: PostViewModel by viewModels()
         viewModel.data.observe(this) { post ->
-            with(binding) {
-                author.text = post.author
-                published.text = post.published
-                content.text = post.content
-                like.setImageResource(
-                    if (post.likedByMe) R.drawable.ic_liked_24 else R.drawable.ic_like_24
-                )
+            binding.root.removeAllViews()
+            post.forEach { post ->
+                CardPostBinding.inflate(layoutInflater, binding.root, true).apply {
+                    author.text = post.author
+                    published.text = post.published
+                    content.text = post.content
+                    like.setImageResource(
+                        if (post.likedByMe) R.drawable.ic_liked_24 else R.drawable.ic_like_24
+                    )
 
-                numberOfLikes.text = formatNumber(post.likes)
-                numberOfReposts.text = formatNumber(post.shares)
+                    like.setOnClickListener { viewModel.likeById(post.id) }
+
+                    numberOfLikes.text = formatNumber(post.likes)
+                    numberOfReposts.text = formatNumber(post.shares)
 
 
+                }
             }
+            binding.root.setOnClickListener { viewModel.like() }
+            binding.root.setOnClickListener { viewModel.share() }
+
+
         }
-        binding.like.setOnClickListener { viewModel.like() }
-        binding.repost.setOnClickListener { viewModel.share() }
-
-
-
 
 
     }
-
-
 }
 
 

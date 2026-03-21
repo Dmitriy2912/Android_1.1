@@ -8,7 +8,9 @@ data class Post (
     val likes: Int = 0,
     val likedByMe: Boolean = false,
     val shares: Int,
-    val sharedByMe: Boolean = false
+    val sharedByMe: Boolean = false,
+    val likeById: Boolean,
+    val like: Any
 ) {
-
+    val likeById: Boolean
 }
