@@ -7,11 +7,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import ru.netology.nmedia.R
 import ru.netology.nmedia.adapter.PostAdapter
 import ru.netology.nmedia.databinding.ActivityMainBinding
-import ru.netology.nmedia.databinding.CardPostBinding
-import ru.netology.nmedia.repository.formatNumber
 import ru.netology.nmedia.viewmobel.PostViewModel
 
 
@@ -29,7 +26,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         val viewModel: PostViewModel by viewModels()
-        val adapter = PostAdapter {viewModel.likeById(it.id)}
+        val adapter = PostAdapter() {viewModel.likeById(it.id)}
+        val adapter1 = PostAdapter {viewModel.share(it.id)}
         binding.List.adapter = adapter
         viewModel.data.observe(this) { post ->
             adapter.submitList(post)
@@ -45,7 +43,7 @@ class MainActivity : AppCompatActivity() {
 
 
     }
-}
+
 
 
 

@@ -11,13 +11,15 @@ import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.repository.formatNumber
 
 typealias LikeListener = (Post) -> Unit
+typealias ShareListener = (Post) -> Unit
 
-class PostAdapter(private val likeListener: LikeListener): ListAdapter<Post, PostViewHolder>(
-    PostDiffCallback
-){
+class PostAdapter(
+    private val shareListener: ShareListener
+): ListAdapter<Post, PostViewHolder>( PostDiffCallback) {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
        val binding = CardPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return PostViewHolder(binding, likeListener)
+        return PostViewHolder(binding, likeListener, shareListener)
     }
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
@@ -30,8 +32,12 @@ class PostAdapter(private val likeListener: LikeListener): ListAdapter<Post, Pos
     }
 
 
-class PostViewHolder(private val binding: CardPostBinding, LikeListener: LikeListener) : RecyclerView.ViewHolder(binding.root){
-fun bind(post: Post){
+class PostViewHolder(
+    private val binding: CardPostBinding,
+    private val likeListener: LikeListener,
+    private val shareListener: ShareListener
+) : RecyclerView.ViewHolder(binding.root){
+fun bind(post: Post) {
     with(binding) {
         author.text = post.author
         published.text = post.published
@@ -42,10 +48,10 @@ fun bind(post: Post){
         numberOfLikes.text = formatNumber(post.likes)
         numberOfReposts.text = formatNumber(post.shares)
 
-        repost.setOnClickListener { LikeListener(post) }
-        like.setOnClickListener {  LikeListener(post) }
+        repost.setOnClickListener { shareListener(post) }
+        like.setOnClickListener { likeListener(post) }
     }
-    }
+}
 }
 object PostDiffCallback : DiffUtil.ItemCallback<Post>() {
     override fun areItemsTheSame(oldItem: Post, newItem: Post) = oldItem.id == newItem.id

@@ -19,7 +19,7 @@ class PostRepositoryInMemoryImpl : PostRepository {
             likedByMe = false,
             likeById = 20,
             shares = 20,
-            sharedByMe = 200
+            sharedByMe = false
 
         ),
         Post(
@@ -31,7 +31,8 @@ class PostRepositoryInMemoryImpl : PostRepository {
             likedByMe = false,
             likeById = 20,
             shares = 20,
-            sharedByMe = 200
+            sharedByMe = false,
+
         )
 
     )
@@ -43,28 +44,18 @@ class PostRepositoryInMemoryImpl : PostRepository {
     override fun get(): LiveData<List<Post>> = data
 
     override fun like(id: Long) {
-        val posts = post.indexOfFirst { it.id == id }
-        if (posts != -1){
-            val currentPost = post[posts]
-            post[posts] = if (currentPost.likedByMe) {
-                currentPost.copy(likes = currentPost.likes - 1, likedByMe = false)
-            } else {
-               currentPost.copy(likes = currentPost.likes + 1, likedByMe = true)
-            }
-            data.value = post
+        post = post.map {
+           if (it.id != id) it else it.copy(likedByMe = !it.likedByMe, likes = if (it.likedByMe) it.likes - 1 else it.likes + 1)
         }
+        data.value = post
+//
     }
 
     override fun share(id: Long) {
-        val posts = post.indexOfFirst { it.id == id }
-        if (posts != -1){
-            val currentPost = post[posts]
-             post[posts] = if (currentPost.sharedByMe) {
-                currentPost.copy(shares = currentPost.shares - 1, sharedByMe = false)
-            } else {
-                currentPost.copy(shares = currentPost.shares +1, sharedByMe = true)
-            }
+        post = post.map {
+            if (it.id != id) it else it.copy(likedByMe = !it.likedByMe, likes = if (it.likedByMe) it.likes - 1 else it.likes + 1)
         }
+        data.value = post
     }
 
     override fun likeById(id: Long) {
