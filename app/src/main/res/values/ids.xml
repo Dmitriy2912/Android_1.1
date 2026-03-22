@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="avatar" type="id" />
+    <item name="author" type="id" />
+    <item name="menu" type="id" />
+    <item name="published" type="id" />
+    <item name="like" type="id" />
+    <item name="numberOfLikes" type="id" />
+    <item name="repost" type="id" />
+    <item name="numberOfReposts" type="id" />
+    <item name="eye" type="id" />
+    <item name="numberOfViews" type="id" />
+</resources>
