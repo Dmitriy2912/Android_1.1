@@ -12,9 +12,10 @@ class PostViewModel: ViewModel() {
     fun like(post: Post) = repository.like(post.id)
 
     fun share(post: Long){
-        repository.share(post.id)
+        repository.share(id = 1)
     }
 
-    fun likeById(id: Long) = repository.likeById(id)
+    fun likeById(id: Post) = repository.likeById(id)
+
 }
 

@@ -14,12 +14,13 @@ typealias LikeListener = (Post) -> Unit
 typealias ShareListener = (Post) -> Unit
 
 class PostAdapter(
-    private val shareListener: ShareListener
+    private val shareListener: ShareListener,
+    private val likeListener: LikeListener
 ): ListAdapter<Post, PostViewHolder>( PostDiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
        val binding = CardPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return PostViewHolder(binding, likeListener, shareListener)
+        return PostViewHolder(binding, likeListener , shareListener)
     }
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {

@@ -1,6 +1,5 @@
 package ru.netology.nmedia.repository
 
-import android.R.id
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import ru.netology.nmedia.dto.Post
@@ -58,9 +57,14 @@ class PostRepositoryInMemoryImpl : PostRepository {
         data.value = post
     }
 
-    override fun likeById(id: Long) {
+    override fun likeById(id: Post) {
         post = post.map {
-                if (it.id != id) it else it.copy(likedByMe = !it.likedByMe, likes = if (it.likedByMe) it.likes - 1 else it.likes + 1)
+               if (it.id != id) {
+                   it
+               } else it.copy( likedByMe = !it.likedByMe,
+                    likes = if (it.likedByMe) it.likes - 1 else it.likes + 1
+                )
+
             }
         data.value = post
         }
