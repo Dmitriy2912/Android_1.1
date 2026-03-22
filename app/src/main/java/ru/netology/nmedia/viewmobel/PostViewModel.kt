@@ -9,13 +9,13 @@ class PostViewModel: ViewModel() {
 
     private val repository: PostRepository = PostRepositoryInMemoryImpl()
     val data = repository.get()
-    fun like(post: Post) = repository.like(post.id)
+        //fun like(post: Post) = repository.like(post.id)
 
     fun share(id: Long){
         repository.share(id)
     }
 
-    fun likeById(id: Post) = repository.likeById(id)
+    fun likeById(id: Long) = repository.like(id)
 
 }
 
