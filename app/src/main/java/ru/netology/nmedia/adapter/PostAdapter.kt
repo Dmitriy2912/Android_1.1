@@ -2,6 +2,7 @@ package ru.netology.nmedia.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -12,15 +13,17 @@ import ru.netology.nmedia.repository.formatNumber
 
 typealias LikeListener = (Post) -> Unit
 typealias ShareListener = (Post) -> Unit
+typealias RemoveListener = (Post) -> Unit
 
 class PostAdapter(
     private val shareListener: ShareListener,
-    private val likeListener: LikeListener
+    private val likeListener: LikeListener,
+    private val removeListener: RemoveListener,
 ): ListAdapter<Post, PostViewHolder>( PostDiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
        val binding = CardPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return PostViewHolder(binding, likeListener , shareListener)
+        return PostViewHolder(binding, likeListener , shareListener, removeListener)
     }
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
@@ -36,7 +39,8 @@ class PostAdapter(
 class PostViewHolder(
     private val binding: CardPostBinding,
     private val likeListener: LikeListener,
-    private val shareListener: ShareListener
+    private val shareListener: ShareListener,
+    private val removeListener: RemoveListener
 ) : RecyclerView.ViewHolder(binding.root){
 fun bind(post: Post) {
     with(binding) {
@@ -49,6 +53,20 @@ fun bind(post: Post) {
         numberOfLikes.text = formatNumber(post.likes)
         numberOfReposts.text = formatNumber(post.shares)
 
+        menu.setOnClickListener{ PopupMenu (it.context, it).apply {
+            inflate(R.menu.menu_post)
+
+            setOnMenuItemClickListener{ item ->
+                when(item.itemId) {
+                    R.id.remove -> {
+                       removeListener(post)
+                        true
+                    } else -> false
+                }
+            }
+             show()
+        }
+        }
         repost.setOnClickListener { shareListener(post) }
         like.setOnClickListener { likeListener(post) }
     }

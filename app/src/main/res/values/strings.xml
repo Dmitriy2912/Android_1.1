@@ -6,5 +6,9 @@
     <string name="desription_Laik" translatable="false">Laik menu</string>
     <string name="desription_repost" translatable="false">repost menu</string>
     <string name="desription_eye" translatable="false">eye menu</string>
+    <string name="menu_edit" />
+    <string name="menu_remove" />
+    <string name="post_input_hint">Post content</string>
+    <string name="content_is_blank_error">Content is blank</string>
 
 </resources>

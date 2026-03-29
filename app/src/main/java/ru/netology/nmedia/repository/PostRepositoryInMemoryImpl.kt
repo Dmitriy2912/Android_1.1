@@ -8,6 +8,7 @@ import ru.netology.nmedia.dto.Post
 class PostRepositoryInMemoryImpl : PostRepository {
 
 
+    private lateinit var posts: List<Post>
     private var post = listOf(
         Post(
             id = 2,
@@ -35,33 +36,77 @@ class PostRepositoryInMemoryImpl : PostRepository {
         )
 
     )
+    private var nextId = post.first().id + 1
 
 
-    private val data = MutableLiveData(post)
+    private val data = MutableLiveData(posts)
 
 
     override fun get(): LiveData<List<Post>> = data
 
     override fun like(id: Long) {
-        post = post.map {
-           if (it.id != id) it else it.copy(likedByMe = !it.likedByMe, likes = if (it.likedByMe) it.likes - 1 else it.likes + 1)
+        posts = post.map { post ->
+            if(post.id == id) {
+            post.copy(likeById = !post.likedByMe,
+                likes = if (post.likedByMe) post.likes - 1 else post.likes + 1
+            )
+            } else{
+                post
+            }
+
         }
-        data.value = post
+        data.value = posts
+        }
+//           if (it.id != id) it else it.copy(likedByMe = !it.likedByMe, likes = if (it.likedByMe) it.likes - 1 else it.likes + 1)
+//        }
+
+
 //
-    }
+
 
     override fun share(id: Long) {
-        post = post.map {
-            if (it.id != id) it else it.copy(sharedByMe = !it.sharedByMe, shares = if (it.sharedByMe) it.shares - 1 else it.shares + 1)
+        posts = posts.map { post ->
+            if (post.id == id) {
+                post.copy(
+                    sharedByMe = !post.sharedByMe,
+                    shares = if (post.sharedByMe) post.shares - 1 else post.shares + 1)
+            } else {
+                post
+            }
+
         }
-        data.value = post
+        data.value = posts
+    }
+
+//            if (it.id != id) it else it.copy(sharedByMe = !it.sharedByMe, shares = if (it.sharedByMe) it.shares - 1 else it.shares + 1)
+//        }
+//        data.value = post
+
+
+    override fun removeById(id: Long) {
+        posts =post.filter { it.id != id }
+        data.value = posts
+    }
+
+    override fun seve(post: Post) {
+        if (post.id == 0L){
+             posts = listOf(post.copy(id = nextId++, author = "Me", published = "Now")) + post
+            data.value = posts
+        } else {
+            posts = posts.map{
+                 if (it.id = post.id) {
+                    it.copy(context = post.content)
+                } else {it}
+
+            }
+
+        }
+
+    data.value = posts
     }
 
 
-
-
-
-    }
+}
 
 
 
