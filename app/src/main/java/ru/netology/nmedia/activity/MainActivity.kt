@@ -57,10 +57,17 @@ class MainActivity : AppCompatActivity() {
             viewModel.seveContent(content)
             binding.content.setText("")
             binding.content.clearFocus()
+
             AndroidUtils.hideKeyboard(binding.content)
-
-
-
+        }
+        viewModel.edited.observe(this){edited ->
+            if(edited.id != 0L){
+                with(binding.content){
+                    AndroidUtils.showKeyboard(this)
+                    setText("")
+                    append(edited.content)
+                }
+            }
         }
 
 
