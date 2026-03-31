@@ -5,7 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.MainActivity">
+    tools:context=".activity.MainActivity"
+    tools:ignore="ExtraText">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/List"
@@ -41,6 +42,28 @@
         android:src="@drawable/outline_check_circle_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+
+    <EditText
+        android:id="@+id/content1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:inputType="textMultiLine"
+        android:hint="@string/post_input_hint"
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@id/content"
+        app:layout_constraintEnd_toStartOf=""
+        app:layout_constraintEnd_toEndOf="@id/content"/>
+
+
+
+
+
+
+
+
+
 
 
 
