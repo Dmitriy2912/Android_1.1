@@ -1,14 +1,14 @@
 <resources>
     <string name="app_name">Nmedia</string>
     <string name="Nmedia">Nmedia!</string>
-    <string name="desription_post_author_avtor" translatable="false">Post author actor</string>
-    <string name="desription_post_menu" translatable="false">Post menu</string>
+    <string name="desription_post_author_avtor">Post author actor</string>
+    <string name="desription_post_menu">Post menu</string>
     <string name="desription_Laik" translatable="false">Laik menu</string>
-    <string name="desription_repost" translatable="false">repost menu</string>
-    <string name="desription_eye" translatable="false">eye menu</string>
-    <string name="menu_edit" />
-    <string name="menu_remove" />
-    <string name="post_input_hint">Post content</string>
-    <string name="content_is_blank_error">Content is blank</string>
+    <string name="desription_repost">repost menu</string>
+    <string name="desription_eye">eye menu</string>
+    <string name="menu_edit">edit</string>
+    <string name="menu_remove">"delete "</string>
+    <string name="post_input_hint" translatable="false">Post content</string>
+    <string name="content_is_blank_error" translatable="false">Content is blank error</string>
 
 </resources>

@@ -17,7 +17,6 @@ import ru.netology.nmedia.util.AndroidUtils
 import ru.netology.nmedia.viewmobel.PostViewModel
 
 
-
 class MainActivity : AppCompatActivity() {
     @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,18 +34,18 @@ class MainActivity : AppCompatActivity() {
         val adapter = PostAdapter(
             { post -> viewModel.share(post.id) },
             { post -> viewModel.likeById(post.id) },
-            {post -> viewModel.removeById(post.id)}
+            { post -> viewModel.removeById(post.id) }
         )
 
         binding.List.adapter = adapter
         viewModel.data.observe(this) { post ->
             adapter.submitList(post)
 
-            }
+        }
         binding.seve.setOnClickListener {
-          val content =  binding.content.text?.toString().orEmpty()
+            val content = binding.content.text?.toString().orEmpty()
 
-            if (content.isBlank()){
+            if (content.isBlank()) {
                 Toast.makeText(
                     this,
                     R.string.content_is_blank_error,
@@ -60,9 +59,9 @@ class MainActivity : AppCompatActivity() {
 
             AndroidUtils.hideKeyboard(binding.content)
         }
-        viewModel.edited.observe(this){edited ->
-            if(edited.id != 0L){
-                with(binding.content){
+        viewModel.edited.observe(this) { edited ->
+            if (edited.id != 0L) {
+                with(binding.content) {
                     AndroidUtils.showKeyboard(this)
                     setText("")
                     append(edited.content)
@@ -71,12 +70,12 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-            //binding.root.setOnClickListener { viewModel.like() }
-            //binding.root.setOnClickListener { viewModel.share() }
+        //binding.root.setOnClickListener { viewModel.like() }
+        //binding.root.setOnClickListener { viewModel.share() }
 
 
-        }
     }
+}
 
 
 

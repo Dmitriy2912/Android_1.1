@@ -37,7 +37,7 @@ class PostViewModel : ViewModel() {
         edited.value?.let { post ->
             val trimed: String = content.trim()
 
-            if (post.content == trimed) {
+            if (post.content != trimed) {
                 repository.seve(post.copy(content = trimed))
             }
         }
