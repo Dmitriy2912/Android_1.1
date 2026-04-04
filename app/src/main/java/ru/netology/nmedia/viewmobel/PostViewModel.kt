@@ -10,15 +10,6 @@ import ru.netology.nmedia.repository.PostRepository
 import ru.netology.nmedia.repository.PostRepositoryInMemoryImpl
 
 private val empty = Post(
-    id = TODO(),
-    author = TODO(),
-    published = TODO(),
-    content = TODO(),
-    likes = TODO(),
-    likedByMe = TODO(),
-    shares = TODO(),
-    sharedByMe = TODO(),
-    context = TODO()
 )
 
 class PostViewModel : ViewModel() {
@@ -36,7 +27,7 @@ class PostViewModel : ViewModel() {
     val editedPost: StateFlow<Post> = _editedPost
 
     fun edit(post: Post) {
-        _editedPost.value = post 
+        _editedPost.value = post
     }
 
 
