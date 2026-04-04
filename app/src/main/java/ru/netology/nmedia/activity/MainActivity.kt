@@ -3,18 +3,22 @@ package ru.netology.nmedia.activity
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
-import android.widget.Toast.makeText
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import kotlinx.coroutines.flow.collectLatest
 import ru.netology.nmedia.R
 import ru.netology.nmedia.adapter.PostAdapter
 import ru.netology.nmedia.databinding.ActivityMainBinding
+import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.util.AndroidUtils
 import ru.netology.nmedia.viewmobel.PostViewModel
+
+
 
 
 class MainActivity : AppCompatActivity() {
@@ -34,7 +38,9 @@ class MainActivity : AppCompatActivity() {
         val adapter = PostAdapter(
             { post -> viewModel.share(post.id) },
             { post -> viewModel.likeById(post.id) },
-            { post -> viewModel.removeById(post.id) }
+            { post -> viewModel.removeById(post.id) },
+            {post -> viewModel.edit(post)}
+
         )
 
         binding.List.adapter = adapter
@@ -66,6 +72,17 @@ class MainActivity : AppCompatActivity() {
                     setText("")
                     append(edited.content)
                 }
+            }
+        }
+        viewModel.editedPost.collectLatest<Post> { edited ->
+            if (edited.id != 0L) { // если редактируем существующий пост
+                // Показываем блок отмены
+                binding.description.visibility = View.VISIBLE
+                // Подставляем исходный текст в превью
+                binding.description.text = edited.content
+            } else {
+                // Скрываем блок отмены (режим создания нового поста)
+                binding.description.visibility = View.GONE
             }
         }
 

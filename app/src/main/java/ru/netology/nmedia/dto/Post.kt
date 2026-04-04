@@ -12,4 +12,8 @@ data class Post(
     val context: String = ""
     // val likeById: Long = 0
 
-)
+) {
+    companion object {
+        val empty = Post()
+    }
+}
