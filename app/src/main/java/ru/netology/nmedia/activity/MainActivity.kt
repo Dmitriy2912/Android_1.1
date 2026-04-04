@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
             { post -> viewModel.share(post.id) },
             { post -> viewModel.likeById(post.id) },
             { post -> viewModel.removeById(post.id) },
-            {post -> viewModel.edit(post)} as () -> Unit
+            {post -> viewModel.edit(post)}
 
         )
 

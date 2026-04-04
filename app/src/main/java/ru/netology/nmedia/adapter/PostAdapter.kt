@@ -11,20 +11,23 @@ import ru.netology.nmedia.databinding.CardPostBinding
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.repository.formatNumber
 
+
+
 typealias LikeListener = (Post) -> Unit
 typealias ShareListener = (Post) -> Unit
 typealias RemoveListener = (Post) -> Unit
+typealias EditListener = (Post) -> Unit
 
 class PostAdapter(
     private val shareListener: ShareListener,
     private val likeListener: LikeListener,
     private val removeListener: RemoveListener,
-    function: () -> Unit,
+    private val editListener: EditListener,
 ): ListAdapter<Post, PostViewHolder>( PostDiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
        val binding = CardPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return PostViewHolder(binding, likeListener , shareListener, removeListener)
+        return PostViewHolder(binding, likeListener , shareListener, removeListener, editListener)
     }
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
@@ -41,9 +44,12 @@ class PostViewHolder(
     private val binding: CardPostBinding,
     private val likeListener: LikeListener,
     private val shareListener: ShareListener,
-    private val removeListener: RemoveListener
+    private val removeListener: RemoveListener,
+    private val editListener: EditListener,
 ) : RecyclerView.ViewHolder(binding.root){
+
 fun bind(post: Post) {
+
     with(binding) {
         author.text = post.author
         published.text = post.published
@@ -70,8 +76,11 @@ fun bind(post: Post) {
         }
         repost.setOnClickListener { shareListener(post) }
         like.setOnClickListener { likeListener(post) }
-    }
+
 }
+}
+
+
 }
 object PostDiffCallback : DiffUtil.ItemCallback<Post>() {
     override fun areItemsTheSame(oldItem: Post, newItem: Post) = oldItem.id == newItem.id
@@ -80,4 +89,6 @@ object PostDiffCallback : DiffUtil.ItemCallback<Post>() {
     override fun areContentsTheSame(oldItem: Post, newItem: Post) = oldItem == newItem
 
 }
+
+
 

@@ -89,22 +89,17 @@ class PostRepositoryInMemoryImpl : PostRepository {
     }
 
     override fun seve(post: Post) {
-        if (post.id == 0L) {
-            posts = listOf(post.copy(id = nextId++, author = "Me", published = "Now")) + posts
-            data.value = posts
+        posts = if (post.id == 0L) {
+            listOf(post.copy(id = nextId++, author = "Me", published = "Now")) + posts
         } else {
-            posts = posts.map {
+            posts.map {
                 if (it.id == post.id) {
-                    it.copy(context = post.context)
+                    it.copy(content = post.content) // текст поста вы храните в поле content, соответственно обновлять нужно его, поле context можно удалить
                 } else {
                     it
                 }
-
-
             }
-
         }
-
         data.value = posts
     }
 
