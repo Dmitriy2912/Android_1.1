@@ -1,5 +1,6 @@
 package ru.netology.nmedia.viewmobel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -16,19 +17,23 @@ class PostViewModel : ViewModel() {
 
     private val repository: PostRepository = PostRepositoryInMemoryImpl()
     val data = repository.get()
+    private val _edited = MutableLiveData(empty)
+    val edited: LiveData<Post> = _edited
+
+    fun edit(post: Post) {
+        _edited.value = post
+    }
+    fun  clearEdit() {
+        _edited.value = empty
+    }
 
     //fun like(post: Post) = repository.like(post.id)
-    val edited = MutableLiveData(empty)
+
 
     fun share(id: Long) {
         repository.share(id)
     }
-    private val _editedPost = MutableStateFlow<Post>(Post.empty)
-    val editedPost: StateFlow<Post> = _editedPost
 
-    fun edit(post: Post) {
-        _editedPost.value = post
-    }
 
 
 
@@ -46,7 +51,7 @@ class PostViewModel : ViewModel() {
                 repository.seve(post.copy(content = trimed))
             }
         }
-        edited.value = empty
+        _edited.value = empty
 
     }
 

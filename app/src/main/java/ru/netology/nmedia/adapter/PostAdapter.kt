@@ -19,6 +19,7 @@ class PostAdapter(
     private val shareListener: ShareListener,
     private val likeListener: LikeListener,
     private val removeListener: RemoveListener,
+    function: () -> Unit,
 ): ListAdapter<Post, PostViewHolder>( PostDiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
