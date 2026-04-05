@@ -63,24 +63,20 @@ class MainActivity : AppCompatActivity() {
 
             AndroidUtils.hideKeyboard(binding.content)
         }
-        viewModel.edited.observe(this) { edited ->
-            if (edited.id != 0L) {
-                with(binding.content) {
-                    AndroidUtils.showKeyboard(this)
-                    setText("")
-                    append(edited.content)
-                }
-            }
-        }
+
         viewModel.edited.observe(this){ edited ->
             if (edited.id != 0L) {
                 with(binding.content) {
                     AndroidUtils.showKeyboard(this)
                     setText("")
                     append(edited.content)
+                    binding.description.visibility = View.VISIBLE
+                    binding.cancel.visibility = View.VISIBLE
+                    binding.description.text = edited.content
             }
         }else{
-                binding.content.visibility = View.GONE
+                binding.cancel.visibility = View.GONE
+                binding.description.visibility = View.GONE
 
         }
 

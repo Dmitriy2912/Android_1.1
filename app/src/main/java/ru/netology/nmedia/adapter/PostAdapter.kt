@@ -60,19 +60,29 @@ fun bind(post: Post) {
         numberOfLikes.text = formatNumber(post.likes)
         numberOfReposts.text = formatNumber(post.shares)
 
+
+
         menu.setOnClickListener{ PopupMenu (it.context, it).apply {
             inflate(R.menu.menu_post)
+
+
 
             setOnMenuItemClickListener{ item ->
                 when(item.itemId) {
                     R.id.remove -> {
-                       removeListener(post)
+                        removeListener(post)
                         true
-                    } else -> false
+                    }
+                    R.id.edit -> { 
+                        editListener(post)
+                        true
+                    }
+                    else -> false
                 }
             }
              show()
         }
+
         }
         repost.setOnClickListener { shareListener(post) }
         like.setOnClickListener { likeListener(post) }
