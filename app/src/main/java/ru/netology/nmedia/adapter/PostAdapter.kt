@@ -54,10 +54,11 @@ fun bind(post: Post) {
         author.text = post.author
         published.text = post.published
         content.text = post.content
-        like.setImageResource(
-            if (post.likedByMe) R.drawable.ic_liked_24 else R.drawable.ic_like_24
-        )
-        numberOfLikes.text = formatNumber(post.likes)
+
+        like.isChecked = post.likedByMe
+        like.text = post.likes.toString()
+
+        numberOfReposts.text = formatNumber(post.likes)
         numberOfReposts.text = formatNumber(post.shares)
 
 
@@ -73,7 +74,7 @@ fun bind(post: Post) {
                         removeListener(post)
                         true
                     }
-                    R.id.edit -> { 
+                    R.id.edit -> {
                         editListener(post)
                         true
                     }
