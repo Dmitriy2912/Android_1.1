@@ -13,6 +13,13 @@
         <item name="buttonTint">#00FFFF</item>
     </style>
 
+    <style name="Widget.AppTheme.Menu" parent="Widget.Material3.Button.IconButton.Filled.Tonal">
+        <item name="buttonTint">#00FF00</item>
+    </style>
+
+
+
+
 
     
 </resources>

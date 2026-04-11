@@ -57,9 +57,10 @@ fun bind(post: Post) {
 
         like.isChecked = post.likedByMe
         like.text = post.likes.toString()
+        repost.text = formatNumber(post.shares)
 
-        numberOfReposts.text = formatNumber(post.likes)
-        numberOfReposts.text = formatNumber(post.shares)
+        //numberOfReposts.text = formatNumber(post.likes)
+       // numberOfReposts.text = formatNumber(post.shares)
 
 
 

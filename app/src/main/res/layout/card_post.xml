@@ -43,15 +43,19 @@
         app:layout_constraintTop_toTopOf="@id/author"
         tools:text="@sample/posts.json/data/published" />
 
-    <ImageButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/menu"
+        style="@style/Widget.AppTheme.Menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:background="@android:color/transparent"
         android:contentDescription="@string/desription_post_menu"
-        app:srcCompat="@drawable/outline_more_vert_24"
+        android:checkable="true"
+        android:button="@drawable/outline_more_vert_24"
+        app:icon = "@drawable/outline_more_vert_24"
+        app:iconTint ="?attr/materialIconButtonFilledTonalStyle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
@@ -73,13 +77,10 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/like"
         style="@style/Widget.AppTheme.LikeButton"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:checkable="true"
-        android:minHeight="0dp"
         android:minWidth="0dp"
         app:iconTint="@color/like_color_selector"
         app:icon="@drawable/ic_like_selector"
@@ -91,21 +92,17 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/repost"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
         style="@style/Widget.AppTheme.Repost"
-        app:icon="@drawable/outline_share_reviews_24"
-        app:iconTint="?attr/colorAccent"
-        android:minHeight="0dp"
-        android:minWidth="0dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:button= "@drawable/outline_share_reviews_24"
+        android:button="@drawable/outline_share_reviews_24"
         android:contentDescription="@string/desription_repost"
+        app:icon="@drawable/outline_share_reviews_24"
+        app:iconTint="?attr/colorAccent"
         app:layout_constraintStart_toEndOf="@id/like"
         app:layout_constraintTop_toTopOf="@id/like"
-        tools:text="12"/>
+        tools:text="12" />
 
 
 
