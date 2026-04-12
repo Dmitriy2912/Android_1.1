@@ -2,17 +2,22 @@ package ru.netology.nmedia.activity
 
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.launch
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import ru.netology.nmedia.R
 import ru.netology.nmedia.adapter.PostAdapter
+import ru.netology.nmedia.adapter.ShareListener
 import ru.netology.nmedia.databinding.ActivityMainBinding
+import ru.netology.nmedia.dto.Post
+import ru.netology.nmedia.repository.formatNumber
 import ru.netology.nmedia.util.AndroidUtils
 import ru.netology.nmedia.viewmobel.PostViewModel
 
@@ -33,64 +38,44 @@ class MainActivity : AppCompatActivity() {
         }
 
         val viewModel: PostViewModel by viewModels()
+        val newPostLauncher = registerForActivityResult(NewPostContract) {
+            val result = it ?: return@registerForActivityResult
+            viewModel.seveContent(result)
+        }
         val adapter = PostAdapter(
             { post -> viewModel.share(post.id) },
             { post -> viewModel.likeById(post.id) },
             { post -> viewModel.removeById(post.id) },
-            {post -> viewModel.edit(post)}
+            { post -> viewModel.edit(post) }
 
         )
+
+
 
         binding.List.adapter = adapter
         viewModel.data.observe(this) { post ->
             adapter.submitList(post)
 
         }
-        binding.seve.setOnClickListener {
-            val content = binding.content.text?.toString().orEmpty()
 
-            if (content.isBlank()) {
-                Toast.makeText(
-                    this,
-                    R.string.content_is_blank_error,
-                    Toast.LENGTH_SHORT
-                ).show()
-                return@setOnClickListener
+        override fun formatNumber(post: Post) {
+            val intent = Intent().apply {
+                action = Intent.ACTION_SEND
+                type = "text/plain"
+                putExtra(Intent.EXTRA_TEXT, post.content)
             }
-            viewModel.seveContent(content)
-            binding.content.setText("")
-            binding.content.clearFocus()
-
-            AndroidUtils.hideKeyboard(binding.content)
+            val chooser =
+                Intent.createChooser(intent, getString(R.string.desription_post_author_avtor))
+            startActivity(chooser)
         }
 
-        viewModel.edited.observe(this){ edited ->
-            if (edited.id != 0L) {
-                with(binding.content) {
-                    AndroidUtils.showKeyboard(this)
-                    setText("")
-                    append(edited.content)
-                    binding.description.visibility = View.VISIBLE
-                    binding.cancel.visibility = View.VISIBLE
-                    binding.description.text = edited.content
-            }
-        }else{
-                binding.cancel.visibility = View.GONE
-                binding.description.visibility = View.GONE
+        binding.add.setOnClickListener {
+            newPostLauncher.launch()
 
         }
-
-        }
-        binding.cancel.setOnClickListener {
-            viewModel.clearEdit()
-            binding.content.setText("")
-
-
+        
         }
 
-
-        //binding.root.setOnClickListener { viewModel.like() }
-        //binding.root.setOnClickListener { viewModel.share() }
 
 
     }
