@@ -13,6 +13,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.ActivityNewPostBinding
+import kotlin.jvm.java
 
 class NewPostActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,8 +37,30 @@ class NewPostActivity : AppCompatActivity() {
             }
             finish()
         }
+        binding.ok.setOnClickListener {
+            val newText = binding.edit.text.toString()
+            if (newText.isBlank()) {
+                setResult(RESULT_CANCELED)
+            } else {
+                val resultIntent = Intent().putExtra(EditPostContract.KEY_UPDATED_TEXT, newText)
+                setResult(RESULT_OK, resultIntent)
+            }
+            finish()
+        }
     }
 }
+object EditPostContract : ActivityResultContract<String, String?>() {
+    const val KEY_EDIT_TEXT = "edit_text"
+    const val KEY_UPDATED_TEXT = "updated_text"
+    override fun createIntent(context: Context, input: String): Intent =
+        Intent(context, EditPostContract::class.java).putExtra(KEY_EDIT_TEXT, input)
+
+    override fun parseResult(resultCode: Int, intent: Intent?): String? =
+        if (resultCode == Activity.RESULT_OK && intent != null) {
+            intent.getStringExtra(KEY_UPDATED_TEXT)
+        } else null
+    }
+
 
 object NewPostContract: ActivityResultContract<Unit, String?>() {
     const val KEY_TEXT = "post_text"

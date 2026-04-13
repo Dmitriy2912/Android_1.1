@@ -50,14 +50,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/desription_post_menu"
         android:checkable="true"
-        android:button="@drawable/outline_more_vert_24"
-        app:icon = "@drawable/outline_more_vert_24"
-        app:iconTint ="?attr/materialIconButtonFilledTonalStyle"
+        android:contentDescription="@string/desription_post_menu"
+        app:icon="@drawable/outline_more_vert_24"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier"

@@ -52,34 +52,35 @@ class MainActivity : AppCompatActivity() {
 
 
 
+
         binding.List.adapter = adapter
         viewModel.data.observe(this) { post ->
             adapter.submitList(post)
 
         }
 
-        override fun formatNumber(post: Post) {
-            val intent = Intent().apply {
-                action = Intent.ACTION_SEND
-                type = "text/plain"
-                putExtra(Intent.EXTRA_TEXT, post.content)
-            }
-            val chooser =
-                Intent.createChooser(intent, getString(R.string.desription_post_author_avtor))
-            startActivity(chooser)
-        }
+//        override fun formatNumber(post: Post) {
+//            val intent = Intent().apply {
+//                action = Intent.ACTION_SEND
+//                type = "text/plain"
+//                putExtra(Intent.EXTRA_TEXT, post.content)
+//            }
+//            val chooser =
+//                Intent.createChooser(intent, getString(R.string.desription_post_author_avtor))
+//            startActivity(chooser)
+//        }
 
         binding.add.setOnClickListener {
             newPostLauncher.launch()
 
         }
-        
+
         }
 
 
 
     }
-}
+
 
 
 
