@@ -2,23 +2,15 @@ package ru.netology.nmedia.activity
 
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.launch
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import ru.netology.nmedia.R
 import ru.netology.nmedia.adapter.PostAdapter
-import ru.netology.nmedia.adapter.ShareListener
 import ru.netology.nmedia.databinding.ActivityMainBinding
-import ru.netology.nmedia.dto.Post
-import ru.netology.nmedia.repository.formatNumber
-import ru.netology.nmedia.util.AndroidUtils
 import ru.netology.nmedia.viewmobel.PostViewModel
 
 
@@ -46,9 +38,14 @@ class MainActivity : AppCompatActivity() {
             { post -> viewModel.share(post.id) },
             { post -> viewModel.likeById(post.id) },
             { post -> viewModel.removeById(post.id) },
-            { post -> viewModel.edit(post) }
+            { post -> viewModel.edit(post) },
 
         )
+        val editPostLauncher = registerForActivityResult(EditPostContract) {
+            val result = it ?: return@registerForActivityResult
+            viewModel.seveContent(result)
+        }
+
 
 
 

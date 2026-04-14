@@ -15,6 +15,7 @@ import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.ActivityNewPostBinding
 import kotlin.jvm.java
 
+
 class NewPostActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,13 +54,16 @@ object EditPostContract : ActivityResultContract<String, String?>() {
     const val KEY_EDIT_TEXT = "edit_text"
     const val KEY_UPDATED_TEXT = "updated_text"
     override fun createIntent(context: Context, input: String): Intent =
-        Intent(context, EditPostContract::class.java).putExtra(KEY_EDIT_TEXT, input)
+        Intent(context, NewPostActivity::class.java).putExtra(KEY_EDIT_TEXT, input)
 
     override fun parseResult(resultCode: Int, intent: Intent?): String? =
         if (resultCode == Activity.RESULT_OK && intent != null) {
-            intent.getStringExtra(KEY_UPDATED_TEXT)
+
+            binding.edit.setText(intent?.getStringExtra(EditPostContract.KEY_EDIT_TEXT))
         } else null
+
     }
+
 
 
 object NewPostContract: ActivityResultContract<Unit, String?>() {
