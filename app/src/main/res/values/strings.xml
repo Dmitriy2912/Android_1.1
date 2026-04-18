@@ -11,5 +11,6 @@
     <string name="post_input_hint" translatable="false">Post content</string>
     <string name="content_is_blank_error" translatable="false">Content is blank error</string>
     <string name="description_post_save">description_post_save</string>
+    <string name="play_video">Плей видео</string>
 
 </resources>

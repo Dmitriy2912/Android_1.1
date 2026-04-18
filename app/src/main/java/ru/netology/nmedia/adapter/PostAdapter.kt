@@ -1,8 +1,12 @@
 package ru.netology.nmedia.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -10,6 +14,7 @@ import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.CardPostBinding
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.repository.formatNumber
+
 
 
 
@@ -48,16 +53,30 @@ class PostViewHolder(
     private val editListener: EditListener,
 ) : RecyclerView.ViewHolder(binding.root){
 
-fun bind(post: Post) {
+
+
+    fun bind(post: Post) {
 
     with(binding) {
         author.text = post.author
         published.text = post.published
         content.text = post.content
 
+
         like.isChecked = post.likedByMe
         like.text = post.likes.toString()
         repost.text = formatNumber(post.shares)
+
+        if(post.video != null){
+            videoContainer.visibility = View.VISIBLE
+
+            videoContainer.setOnClickListener {
+                openVideoInExternalApp(post.video!!)
+            }
+        } else {
+            videoContainer.visibility = View.GONE
+        }
+
 
         //numberOfReposts.text = formatNumber(post.likes)
        // numberOfReposts.text = formatNumber(post.shares)
@@ -66,8 +85,6 @@ fun bind(post: Post) {
 
         menu.setOnClickListener{ PopupMenu (it.context, it).apply {
             inflate(R.menu.menu_post)
-
-
 
             setOnMenuItemClickListener{ item ->
                 when(item.itemId) {
@@ -89,11 +106,22 @@ fun bind(post: Post) {
         repost.setOnClickListener { shareListener(post) }
         like.setOnClickListener { likeListener(post) }
 
-}
-}
+
+    }
+    }
 
 
 }
+
+
+
+
+
+
+
+
+
+
 object PostDiffCallback : DiffUtil.ItemCallback<Post>() {
     override fun areItemsTheSame(oldItem: Post, newItem: Post) = oldItem.id == newItem.id
 
@@ -101,6 +129,31 @@ object PostDiffCallback : DiffUtil.ItemCallback<Post>() {
     override fun areContentsTheSame(oldItem: Post, newItem: Post) = oldItem == newItem
 
 }
+//class MyClass(private val itemView: View) {
+    private fun openVideoInExternalApp(videoUrl: String, private  itemView: View) {
+        try {
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                data = videoUrl.toUri()
+            }
+            if (intent.resolveActivity(itemView.context.packageManager) != null) {
+                itemView.context.startActivity(intent)
+            } else {
+                Toast.makeText(
+                    itemView.context,
+                    "Не найдено приложение для просмотра видео",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        } catch (e: Exception) {
+            Toast.makeText(
+                itemView.context,
+                "Ошибка при открытии видео",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
+    }
+
 
 
 
