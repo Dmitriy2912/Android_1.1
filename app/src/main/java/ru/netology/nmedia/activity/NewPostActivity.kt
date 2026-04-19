@@ -21,6 +21,7 @@ class NewPostActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         val binding = ActivityNewPostBinding.inflate(layoutInflater)
+        binding.edit.setText(intent?.getStringExtra(EditPostContract.KEY_EDIT_TEXT))
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -33,7 +34,7 @@ class NewPostActivity : AppCompatActivity() {
             if (text.isBlank()){
                 setResult(Activity.RESULT_CANCELED)
             }else {
-                val intent = Intent().putExtra(NewPostContract.KEY_TEXT, text)
+                val intent = Intent().putExtra(NewPostActivity.KEY_TEXT, text)
                 setResult(Activity.RESULT_OK, intent)
             }
             finish()
@@ -56,12 +57,13 @@ object EditPostContract : ActivityResultContract<String, String?>() {
     override fun createIntent(context: Context, input: String): Intent =
         Intent(context, NewPostActivity::class.java).putExtra(KEY_EDIT_TEXT, input)
 
-    override fun parseResult(resultCode: Int, intent: Intent?): String? =
+    override fun parseResult(resultCode: Int, intent: Intent?): Intent  {
         if (resultCode == Activity.RESULT_OK && intent != null) {
 
-            binding.edit.setText(intent?.getStringExtra(EditPostContract.KEY_EDIT_TEXT))
-        } else null
-
+            return (intent)
+        } else {
+            return null
+        }
     }
 
 

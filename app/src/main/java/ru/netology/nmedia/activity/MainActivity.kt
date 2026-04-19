@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         val viewModel: PostViewModel by viewModels()
-        val newPostLauncher = registerForActivityResult(NewPostContract) {
+        val newPostLauncher = registerForActivityResult(EditPostContract.NewPostContract) {
             val result = it ?: return@registerForActivityResult
             viewModel.seveContent(result)
         }
