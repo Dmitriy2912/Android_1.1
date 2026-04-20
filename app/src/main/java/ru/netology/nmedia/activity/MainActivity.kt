@@ -9,7 +9,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import ru.netology.nmedia.adapter.PostAdapter
+
 import ru.netology.nmedia.databinding.ActivityMainBinding
 import ru.netology.nmedia.viewmobel.PostViewModel
 

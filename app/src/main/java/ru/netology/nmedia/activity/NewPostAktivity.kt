@@ -7,16 +7,18 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContract
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import ru.netology.nmedia.R
+
 import ru.netology.nmedia.databinding.ActivityNewPostBinding
 import kotlin.jvm.java
 
 
-class NewPostActivity : AppCompatActivity() {
+
+
+class NewPostAktivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -54,25 +56,34 @@ class NewPostActivity : AppCompatActivity() {
 object EditPostContract : ActivityResultContract<String, String?>() {
     const val KEY_EDIT_TEXT = "edit_text"
     const val KEY_UPDATED_TEXT = "updated_text"
+
     override fun createIntent(context: Context, input: String): Intent =
-        Intent(context, NewPostActivity::class.java).putExtra(KEY_EDIT_TEXT, input)
+        Intent(context, NewPostAktivity::class.java).putExtra(KEY_EDIT_TEXT, input)
 
-    override fun parseResult(resultCode: Int, intent: Intent?): Intent  {
-        if (resultCode == Activity.RESULT_OK && intent != null) {
-
-            return (intent)
+    override fun parseResult(resultCode: Int, intent: Intent?): String? {
+        return if (resultCode == Activity.RESULT_OK && intent != null) {
+            intent.getStringExtra(KEY_UPDATED_TEXT)
         } else {
-            return null
+            null
         }
     }
+}
 
 
 
-object NewPostContract: ActivityResultContract<Unit, String?>() {
-    const val KEY_TEXT = "post_text"
+object NewPostActivity : ActivityResultContract<Unit, String?>() {
+    const val KEY_TEXT = "text"
 
     override fun createIntent(context: Context, input: Unit) =
-        Intent(context, NewPostActivity::class.java)
+        Intent(context, NewPostAktivity::class.java)
 
-    override fun parseResult(resultCode: Int, intent: Intent?) = intent?.getStringExtra(KEY_TEXT)
+    override fun parseResult(resultCode: Int, intent: Intent?): String? =
+        if (resultCode == Activity.RESULT_OK && intent != null) {
+            intent.getStringExtra(KEY_TEXT)
+        } else {
+            null
+        }
 }
+
+
+

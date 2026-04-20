@@ -15,7 +15,7 @@
             android:name=".activity.EditPostActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.NewPostActivity"
+            android:name=".activity.PostAdapter"
             android:exported="false" />
         <activity
             android:name=".activity.IntentHandActivity"
@@ -43,11 +43,11 @@
     <queries>
         <intent>
             <action android:name="android.intent.action.VIEW" />
-            <data android:scheme="http" />
+            <data android:scheme="*" />
         </intent>
         <intent>
             <action android:name="android.intent.action.VIEW" />
-            <data android:scheme="https" />
+            <data android:scheme="*" />
         </intent>
     </queries>
 
