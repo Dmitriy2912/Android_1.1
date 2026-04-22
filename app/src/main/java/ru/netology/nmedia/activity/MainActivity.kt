@@ -9,6 +9,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import ru.netology.nmedia.adapter.PostAdapter
+import ru.netology.nmedia.adapter.VideoListener
 
 import ru.netology.nmedia.databinding.ActivityMainBinding
 import ru.netology.nmedia.viewmobel.PostViewModel
@@ -40,7 +42,8 @@ class MainActivity : AppCompatActivity() {
             { post -> viewModel.removeById(post.id) },
             { post -> viewModel.edit(post) },
 
-        )
+
+            )
         val editPostLauncher = registerForActivityResult(EditPostContract) {
             val result = it ?: return@registerForActivityResult
             viewModel.seveContent(result)
@@ -74,9 +77,13 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-
-
     }
+
+
+
+
+
+
 
 
 

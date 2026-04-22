@@ -54,6 +54,7 @@ class NewPostAktivity : AppCompatActivity() {
     }
 }
 object EditPostContract : ActivityResultContract<String, String?>() {
+
     const val KEY_EDIT_TEXT = "edit_text"
     const val KEY_UPDATED_TEXT = "updated_text"
 
@@ -84,6 +85,8 @@ object NewPostActivity : ActivityResultContract<Unit, String?>() {
             null
         }
 }
+
+
 
 
 
