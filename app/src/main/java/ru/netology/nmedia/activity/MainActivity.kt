@@ -2,15 +2,20 @@ package ru.netology.nmedia.activity
 
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.launch
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.viewModelScope
 import ru.netology.nmedia.adapter.PostAdapter
 import ru.netology.nmedia.adapter.VideoListener
+import android.content.Intent
+import android.net.Uri
 
 import ru.netology.nmedia.databinding.ActivityMainBinding
 import ru.netology.nmedia.viewmobel.PostViewModel
@@ -32,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         val viewModel: PostViewModel by viewModels()
-        val newPostLauncher = registerForActivityResult(EditPostContract.NewPostContract) {
+        val newPostLauncher = registerForActivityResult(EditPostContract) {
             val result = it ?: return@registerForActivityResult
             viewModel.seveContent(result)
         }
@@ -41,13 +46,32 @@ class MainActivity : AppCompatActivity() {
             { post -> viewModel.likeById(post.id) },
             { post -> viewModel.removeById(post.id) },
             { post -> viewModel.edit(post) },
+            {post -> viewModel.viewModelScope}
 
-
-            )
+        )
         val editPostLauncher = registerForActivityResult(EditPostContract) {
             val result = it ?: return@registerForActivityResult
             viewModel.seveContent(result)
         }
+
+         val videoListener: VideoListener = { videoUrl ->
+        try {
+            val intent: Intent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse(videoUrl)
+            }
+
+            // Проверяем, есть ли приложение для обработки Intent
+            if (intent.resolveActivity() != null) {
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, "", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        } catch (e: Exception) {
+            Toast.makeText(this, "", Toast.LENGTH_SHORT)
+                .show()
+        }
+    }
 
 
 
@@ -71,13 +95,20 @@ class MainActivity : AppCompatActivity() {
 //        }
 
         binding.add.setOnClickListener {
-            newPostLauncher.launch()
+            newPostLauncher.launch(
+                input = TODO(),
+                options = TODO()
+            )
 
         }
 
         }
 
     }
+
+private fun Intent.resolveActivity() {
+    TODO("Not yet implemented")
+}
 
 
 

@@ -30,11 +30,13 @@ class PostAdapter(
     private val likeListener: LikeListener,
     private val removeListener: RemoveListener,
     private val editListener: EditListener,
+    private val videoListener: VideoListener
 ): ListAdapter<Post, PostViewHolder>(PostViewHolder.PostDiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
         val binding = CardPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return PostViewHolder(binding, likeListener , shareListener, removeListener, editListener)
+        return PostViewHolder(binding, likeListener , shareListener, removeListener, editListener,
+            videoListener)
     }
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
@@ -55,8 +57,9 @@ class PostViewHolder(
     private val shareListener: ShareListener,
     private val removeListener: RemoveListener,
     private val editListener: EditListener,
+    private val videoListener: VideoListener
 
-) : RecyclerView.ViewHolder(binding.root){
+) : RecyclerView.ViewHolder(binding.root) {
 
     fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
         val binding = CardPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -66,9 +69,10 @@ class PostViewHolder(
             shareListener,
             removeListener,
             editListener,
+            videoListener
         )
     }
-   
+
     fun bind(post: Post) {
 
         with(binding) {
@@ -82,34 +86,35 @@ class PostViewHolder(
             setupVideoBlock(post)
 
 
-
-                //numberOfReposts.text = formatNumber(post.likes)
+            //numberOfReposts.text = formatNumber(post.likes)
             //numberOfReposts.text = formatNumber(post.shares)
             //numberOfReposts.text = formatNumber(post.likes)
             // numberOfReposts.text = formatNumber(post.shares)
 
 
+            menu.setOnClickListener {
+                PopupMenu(it.context, it).apply {
+                    inflate(R.menu.menu_post)
 
-            menu.setOnClickListener{ PopupMenu (it.context, it).apply {
-                inflate(R.menu.menu_post)
 
 
+                    setOnMenuItemClickListener { item ->
+                        when (item.itemId) {
+                            R.id.remove -> {
+                                removeListener(post)
+                                true
+                            }
 
-                setOnMenuItemClickListener{ item ->
-                    when(item.itemId) {
-                        R.id.remove -> {
-                            removeListener(post)
-                            true
+                            R.id.edit -> {
+                                editListener(post)
+                                true
+                            }
+
+                            else -> false
                         }
-                        R.id.edit -> {
-                            editListener(post)
-                            true
-                        }
-                        else -> false
                     }
+                    show()
                 }
-                show()
-            }
 
             }
             repost.setOnClickListener { shareListener(post) }
@@ -119,51 +124,57 @@ class PostViewHolder(
     }
 
     private fun setupVideoBlock(post: Post) {
-            val videoContainer = binding.videoContainer
-            val playButton = binding.playButton
+        val videoContainer = binding.videoContainer
+        val playButton = binding.playButton
 
-            if (post.video != null) {
-                videoContainer.visibility = View.VISIBLE
-
-
-                videoContainer.setOnClickListener {
-                    videoListener(post.video!!)
-                }
+        if (post.video != null) {
+            videoContainer.visibility = View.VISIBLE
 
 
-                playButton.setOnClickListener {
-                    videoListener(post.video!!)
-                }
-            } else {
-                videoContainer.visibility = View.GONE
+            videoContainer.setOnClickListener {
+                videoListener(post.video!!)
             }
 
-}
+
+            playButton.setOnClickListener {
+                videoListener(post.video!!)
+            }
+        } else {
+            videoContainer.visibility = View.GONE
+        }
+
+    }
 
 
     object PostDiffCallback : DiffUtil.ItemCallback<Post>() {
-    override fun areItemsTheSame(oldItem: Post, newItem: Post) = oldItem.id == newItem.id
 
+        override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean {
+            return oldItem.id == newItem.id
+        }
 
-    override fun areContentsTheSame(oldItem: Post, newItem: Post) = oldItem == newItem
+        override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean {
+            return oldItem == newItem
+        }
 
+    }
 }
 
-    private val videoListener: VideoListener = { videoUrl ->
-        try {
-            val intent: Context = Intent(Intent.ACTION_VIEW).apply {
-                data = Uri.parse(videoUrl)
-            }
 
-            // Проверяем, есть ли приложение для обработки Intent
-            if (intent.resolveActivity != null) {
-                startActivity(intent)
-            } else {
-                Toast.makeText(this, "", Toast.LENGTH_SHORT)
-                    .show()
-            }
-        } catch (e: Exception) {
-            Toast.makeText(this, "", Toast.LENGTH_SHORT)
-                .show()
-        }
-    }
+//    private val videoListener: VideoListener = { videoUrl ->
+//        try {
+//            val intent: Context = Intent(Intent.ACTION_VIEW).apply {
+//                data = Uri.parse(videoUrl)
+//            }
+//
+//            // Проверяем, есть ли приложение для обработки Intent
+//            if (intent.resolveActivity != null) {
+//                startActivity(intent)
+//            } else {
+//                Toast.makeText(this, "", Toast.LENGTH_SHORT)
+//                    .show()
+//            }
+//        } catch (e: Exception) {
+//            Toast.makeText(this, "", Toast.LENGTH_SHORT)
+//                .show()
+//        }
+//    }

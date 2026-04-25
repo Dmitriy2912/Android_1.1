@@ -1,40 +1,31 @@
 package ru.netology.nmedia.repository
 
+import android.content.Context
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import ru.netology.nmedia.dto.Post
+import java.io.File
+import java.lang.reflect.Type
 
 
-class PostRepositoryInMemoryImpl : PostRepository {
+class PostRepositorySharedFileImpl(private val context: Context) : PostRepository {
 
+    //private val prefs = context.getSharedPreferences("posts", MODE_PRIVATE)
+    private val gson = Gson()
 
     //private lateinit var posts: List<Post>
-    private var posts = listOf(
-        Post(
-            id = 2,
-            author = "Нетология. Университет интернет-профессий будущего",
-            published = "18 сентября в 10:12",
-            content = "Знаний хватит на всех: на следующей неделе разбираемся с разработкой мобильных приложений, учимся рассказывать истории и составлять PR-стратегию прямо на бесплатных занятиях \uD83D\uDC47",
-            likes = 20,
-            shares = 20,
-            //likeById = 20,
-            context = "22"
+    private var posts = readPosts()
+        set(value) {
+            field = value
+            sync()
+        }
 
-        ),
-        Post(
-            id = 1,
-            author = "Нетология. Университет интернет-профессий будущего",
-            published = "21 мая в 18:36",
-            content = "Привет, это новая Нетология! Когда-то Нетология начиналась с интенсивов по онлайн-маркетингу. Затем появились курсы по дизайну, разработке, аналитике и управлению. Мы растём сами и помогаем расти студентам: от новичков до уверенных профессионалов. Но самое важное остаётся с нами: мы верим, что в каждом уже есть сила, которая заставляет хотеть больше, целиться выше, бежать быстрее. Наша миссия — помочь встать на путь роста и начать цепочку перемен → http://netolo.gy/fyb",
-            likes = 10,
-            shares = 20,
-            //likeById = 20,
-            context = "22"
-
-            )
-
-    )
-    private var nextId = posts.first().id + 1
+    
+    //private var nextId = posts.first().id + 1
+    private var nextId = (posts.maxByOrNull { it.id }?.id ?: 0L) + 1L
 
 
     private val data = MutableLiveData(posts)
@@ -87,6 +78,38 @@ class PostRepositoryInMemoryImpl : PostRepository {
         posts = posts.filter { it.id != id }
         data.value = posts
     }
+
+    private fun readPosts(): List<Post> {
+       val file : File = context.filesDir.resolve(FILE_NAME)
+        return if (file.exists()){
+            file.reader().buffered().use {
+                gson.fromJson(it, postsType)
+
+            }
+        }else {
+            emptyList()
+        }
+
+//        prefs.getString(POSTS_KEY, null)?.let {
+//            gson.fromJson(it, postsType)
+//        } ?: emptyList()
+    }
+
+    private fun sync(){
+        val file : File = context.filesDir.resolve(FILE_NAME)
+        file.writer().buffered().use {
+            it.write(gson.toJson(posts))
+        }
+
+//        prefs.edit {
+//            putString(POSTS_KEY, gson.toJson(posts))
+//        }
+    }
+
+
+    private companion object {
+        const val FILE_NAME = "posts.json"
+        val postsType: Type = TypeToken.getParameterized(List::class.java, Post::class.java).type}
 
     override fun seve(post: Post) {
         posts = if (post.id == 0L) {
