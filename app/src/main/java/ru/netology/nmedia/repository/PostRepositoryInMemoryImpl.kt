@@ -6,15 +6,20 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import ru.netology.nmedia.dto.Post
 import java.io.File
 import java.lang.reflect.Type
 
 
-class PostRepositorySharedFileImpl(private val context: Context) : PostRepository {
+class JsonFilePostRepositoryImpl(private val context: Context) : PostRepository {
 
     //private val prefs = context.getSharedPreferences("posts", MODE_PRIVATE)
     private val gson = Gson()
+    private val postsFile = File(context.filesDir, "posts.json")
+
+
 
     //private lateinit var posts: List<Post>
     private var posts = readPosts()
@@ -22,6 +27,19 @@ class PostRepositorySharedFileImpl(private val context: Context) : PostRepositor
             field = value
             sync()
         }
+
+    private val postsType: Type = TypeToken.getParameterized(
+        List::class.java,
+        Post::class.java
+    ).type
+
+    private var postss = readPosts()
+        set(value) {
+            field = value
+            sync()
+        }
+
+
 
     
     //private var nextId = posts.first().id + 1
@@ -95,6 +113,8 @@ class PostRepositorySharedFileImpl(private val context: Context) : PostRepositor
 //        } ?: emptyList()
     }
 
+
+
     private fun sync(){
         val file : File = context.filesDir.resolve(FILE_NAME)
         file.writer().buffered().use {
@@ -124,6 +144,12 @@ class PostRepositorySharedFileImpl(private val context: Context) : PostRepositor
             }
         }
         data.value = posts
+    }
+
+    override fun loadPosts() {
+        val loadedPosts = readPosts()
+        posts = loadedPosts
+        data.value = loadedPosts
     }
 
 
