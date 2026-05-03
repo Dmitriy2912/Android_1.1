@@ -5,19 +5,30 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.netology.nmedia.dto.Post
 import java.io.File
 import java.lang.reflect.Type
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 
 class JsonFilePostRepositoryImpl(private val context: Context) : PostRepository {
 
     //private val prefs = context.getSharedPreferences("posts", MODE_PRIVATE)
-    private val gson = Gson()
-    private val postsFile = File(context.filesDir, "posts.json")
+   // private val gson = Gson()
+    //private val postsFile = File(context.filesDir, "posts.json")
+    private val gson = GsonBuilder().setPrettyPrinting().create()
+    private val file: File = context.filesDir.resolve(FILE_NAME)
+    private var posts1: MutableList<Post> = mutableListOf()
+    private val data1 = MutableLiveData<List<Post>>()
+
+
+
 
 
 
@@ -97,6 +108,29 @@ class JsonFilePostRepositoryImpl(private val context: Context) : PostRepository 
         data.value = posts
     }
 
+    override fun seve(post: Post) {
+        posts = if (post.id == 0L) {
+            listOf(post.copy(id = nextId++, author = "Me", published = "Now")) + posts
+        } else {
+            posts.map { existingPost ->
+                if (existingPost.id == post.id) {
+                    existingPost.copy(content = post.content)
+                } else {
+                    existingPost
+                }
+            }
+        }
+        data.value = posts
+    }
+
+    override fun loadPosts() {
+        val loadedPosts = readPosts()
+        posts = loadedPosts
+        data.value = loadedPosts
+    }
+
+
+
     private fun readPosts(): List<Post> {
        val file : File = context.filesDir.resolve(FILE_NAME)
         return if (file.exists()){
@@ -131,29 +165,77 @@ class JsonFilePostRepositoryImpl(private val context: Context) : PostRepository 
         const val FILE_NAME = "posts.json"
         val postsType: Type = TypeToken.getParameterized(List::class.java, Post::class.java).type}
 
-    override fun seve(post: Post) {
-        posts = if (post.id == 0L) {
-            listOf(post.copy(id = nextId++, author = "Me", published = "Now")) + posts
-        } else {
-            posts.map {
-                if (it.id == post.id) {
-                    it.copy(content = post.content) // текст поста вы храните в поле content, соответственно обновлять нужно его, поле context можно удалить
-                } else {
-                    it
-                }
+
+//    override fun save(post: Post) {
+//        if (post.id == 0L) {
+//            val newId = generateNextId()
+//            val newPost = post.copy(
+//                id = newId,
+//                author = "Me",
+//                published = getCurrentTimestamp()
+//            )
+//            posts.add(0, newPost)
+//        } else {
+//            val index = posts.indexOfFirst { it.id == post.id }
+//            if (index != -1) {
+//                posts[index] = posts[index].copy(content = post.content)
+//            }
+//        }
+//        saveToFile()
+//        data.value = posts.toList()
+//    }
+
+
+
+    private fun saveToFile() {
+        try {
+            file.parentFile?.mkdirs()
+            file.bufferedWriter().use { writer ->
+                gson.toJson(posts, writer)
             }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
-        data.value = posts
     }
 
-    override fun loadPosts() {
-        val loadedPosts = readPosts()
-        posts = loadedPosts
-        data.value = loadedPosts
+    private fun generateNextId(): Long {
+        return if (posts.isEmpty()) 1L else (posts.maxOf { it.id } + 1)
     }
 
+    private fun getCurrentTimestamp(): String {
+        return SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(Date())
+    }
 
+    companion object {
+        private const val FILE_NAME = "posts_data.json"
+    }
 }
+
+
+
+
+
+
+//    override fun seve(post: Post) {
+//        posts = if (post.id == 0L) {
+//            listOf(post.copy(id = nextId++, author = "Me", published = "Now")) + posts
+//        } else {
+//            posts.map {
+//                if (it.id == post.id) {
+//                    it.copy(content = post.content) // текст поста вы храните в поле content, соответственно обновлять нужно его, поле context можно удалить
+//                } else {
+//                    it
+//                }
+//            }
+//        }
+//        data.value = posts
+//    }
+
+
+
+
+
+
 
 
 //    override fun like() {
