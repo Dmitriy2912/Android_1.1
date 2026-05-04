@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Nmedia">
         <activity
-            android:name=".activity.EditPostActivity"
+            android:name=".activity.NewPostAktivity"
             android:exported="false" />
         <activity
             android:name=".activity.PostAdapter"

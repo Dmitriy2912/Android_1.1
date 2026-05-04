@@ -45,9 +45,11 @@ class MainActivity : AppCompatActivity() {
             { post -> viewModel.share(post.id) },
             { post -> viewModel.likeById(post.id) },
             { post -> viewModel.removeById(post.id) },
-            { post -> viewModel.edit(post) },
-            {post -> viewModel.viewModelScope}
-
+            { post ->
+                viewModel.edit(post)
+                newPostLauncher.launch(post.content)
+            },
+            { videoListener(it) }
         )
         val editPostLauncher = registerForActivityResult(EditPostContract) {
             val result = it ?: return@registerForActivityResult
@@ -61,7 +63,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             // Проверяем, есть ли приложение для обработки Intent
-            if (intent.resolveActivity() != null) {
+            if (intent.resolveActivity(packageManager) != null) {
                 startActivity(intent)
             } else {
                 Toast.makeText(this, "", Toast.LENGTH_SHORT)
@@ -72,6 +74,10 @@ class MainActivity : AppCompatActivity() {
                 .show()
         }
     }
+
+        binding.add.setOnClickListener {
+            newPostLauncher.launch("")
+        }
 
 
 
@@ -94,21 +100,20 @@ class MainActivity : AppCompatActivity() {
 //            startActivity(chooser)
 //        }
 
-        binding.add.setOnClickListener {
-            newPostLauncher.launch(
-                input = TODO(),
-                options = TODO()
-            )
-
-        }
+//        binding.add.setOnClickListener {
+//            newPostLauncher.launch(
+//                input = TODO(),
+//                options = TODO()
+//            )
+//
+//        }
 
         }
 
     }
 
-private fun Intent.resolveActivity() {
-    TODO("Not yet implemented")
-}
+
+
 
 
 

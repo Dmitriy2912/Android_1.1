@@ -160,10 +160,13 @@ class JsonFilePostRepositoryImpl(private val context: Context) : PostRepository 
 //        }
     }
 
-
     private companion object {
-        const val FILE_NAME = "posts.json"
-        val postsType: Type = TypeToken.getParameterized(List::class.java, Post::class.java).type}
+        val postsType: Type = TypeToken.getParameterized(List::class.java, Post::class.java).type
+        private const val FILE_NAME = "posts_data.json"
+    }
+
+
+
 
 
 //    override fun save(post: Post) {
@@ -206,9 +209,7 @@ class JsonFilePostRepositoryImpl(private val context: Context) : PostRepository 
         return SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(Date())
     }
 
-    companion object {
-        private const val FILE_NAME = "posts_data.json"
-    }
+
 }
 
 
