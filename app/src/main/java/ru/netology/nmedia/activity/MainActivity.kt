@@ -41,6 +41,24 @@ class MainActivity : AppCompatActivity() {
             val result = it ?: return@registerForActivityResult
             viewModel.seveContent(result)
         }
+        val videoListener: VideoListener = { videoUrl ->
+            try {
+                val intent: Intent = Intent(Intent.ACTION_VIEW).apply {
+                    data = Uri.parse(videoUrl)
+                }
+
+                // Проверяем, есть ли приложение для обработки Intent
+                if (intent.resolveActivity(packageManager) != null) {
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(this, "", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this, "", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
         val adapter = PostAdapter(
             { post -> viewModel.share(post.id) },
             { post -> viewModel.likeById(post.id) },
@@ -56,24 +74,7 @@ class MainActivity : AppCompatActivity() {
             viewModel.seveContent(result)
         }
 
-         val videoListener: VideoListener = { videoUrl ->
-        try {
-            val intent: Intent = Intent(Intent.ACTION_VIEW).apply {
-                data = Uri.parse(videoUrl)
-            }
 
-            // Проверяем, есть ли приложение для обработки Intent
-            if (intent.resolveActivity(packageManager) != null) {
-                startActivity(intent)
-            } else {
-                Toast.makeText(this, "", Toast.LENGTH_SHORT)
-                    .show()
-            }
-        } catch (e: Exception) {
-            Toast.makeText(this, "", Toast.LENGTH_SHORT)
-                .show()
-        }
-    }
 
         binding.add.setOnClickListener {
             newPostLauncher.launch("")
