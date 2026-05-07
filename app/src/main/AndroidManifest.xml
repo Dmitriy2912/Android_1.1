@@ -14,9 +14,7 @@
         <activity
             android:name=".activity.NewPostAktivity"
             android:exported="false" />
-        <activity
-            android:name=".activity.PostAdapter"
-            android:exported="false" />
+
         <activity
             android:name=".activity.IntentHandActivity"
             android:exported="true">

@@ -39,16 +39,16 @@ class JsonFilePostRepositoryImpl(private val context: Context) : PostRepository 
             sync()
         }
 
-    private val postsType: Type = TypeToken.getParameterized(
-        List::class.java,
-        Post::class.java
-    ).type
-
-    private var postss = readPosts()
-        set(value) {
-            field = value
-            sync()
-        }
+//    private val postsType: Type = TypeToken.getParameterized(
+//        List::class.java,
+//        Post::class.java
+//    ).type
+//
+//    private var postss = readPosts()
+//        set(value) {
+//            field = value
+//            sync()
+//        }
 
 
 
