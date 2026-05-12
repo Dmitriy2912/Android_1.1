@@ -10,7 +10,7 @@
     <string name="menu_remove">"delete "</string>
     <string name="post_input_hint" translatable="false">Post content</string>
     <string name="content_is_blank_error" translatable="false">Content is blank error</string>
-    <string name="description_post_save">description_post_save</string>
-    <string name="play_video">Плей видео</string>
+    <string name="description_post_seve" translatable="false">условное обозначение пост сохранения</string>
+    <string name="play_video" translatable="false">Плей видео</string>
 
 </resources>
